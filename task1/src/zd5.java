@@ -59,12 +59,19 @@ public class zd5 {
         }
 
         int workingDaysBetween = 0;
-        Calendar startCal = Calendar.getInstance();
-        startCal.setTime(firstDate);
-        Calendar endCal = Calendar.getInstance();
-        endCal.setTime(secondDate);
 
-        while (startCal.before(endCal) || startCal.equals(endCal)) {
+        Calendar startCal = Calendar.getInstance();
+        Calendar endCal = Calendar.getInstance();
+
+        if (firstDate.before(secondDate)) {
+            startCal.setTime(firstDate);
+            endCal.setTime(secondDate);
+        } else {
+            startCal.setTime(secondDate);
+            endCal.setTime(firstDate);
+        }
+
+        while (startCal.before(endCal)) {
             if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
                 workingDaysBetween++;
             }
