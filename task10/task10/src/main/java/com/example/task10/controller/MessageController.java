@@ -39,7 +39,6 @@ public class MessageController {
             existingMessage.setTime(Message.getTime());
             return new ResponseEntity<>(repository.save(existingMessage), HttpStatus.OK);
         }
-
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @DeleteMapping("/message/{id}")
