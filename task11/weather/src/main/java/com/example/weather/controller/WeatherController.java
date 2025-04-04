@@ -1,29 +1,29 @@
 package com.example.weather.controller;
 
-import com.example.weather.model.Weather;
-import com.example.weather.service.WeatherService;
+import com.example.weather.model.Main;
+import com.example.weather.model.Root;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
-@RequestMapping("/weather")
 public class WeatherController {
 
     @Autowired
-    private final WeatherService weatherService;
+    private RestTemplate restTemplate;
+    @Value("${appid}")
+    private String appId;
+    @Value("${url.weather}")
+    private String urlWeather;
 
-    public WeatherController(WeatherService weatherService) {
-        this.weatherService = weatherService;
-    }
-
-
-    //    GET /weather/by-coord?lat=55.7558&lon=37.6176
-    @GetMapping("/coord")
-    public ResponseEntity<Weather> getWeather(@RequestParam double lat, @RequestParam double lon) {
-        return weatherService.getWeatherByCoordinates(lat, lon).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+//    http://localhost:8082/weather?lat=54.1838&lon=45.1749
+    @GetMapping("/weather")
+    @Cacheable(value = "weatherCache", key = "#lat + '_' + #lon")
+    public Main getWeather(@RequestParam String lat, @RequestParam String lon) {
+        String request = String.format("%s?lat=%s&lon=%s&units=metric&appid=%s",
+                urlWeather, lat, lon, appId);
+        return restTemplate.getForObject(request, Root.class).getMain();
     }
 }
