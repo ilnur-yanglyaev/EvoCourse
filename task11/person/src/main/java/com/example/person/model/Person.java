@@ -1,9 +1,14 @@
 package com.example.person.model;
 
-import com.example.location.model.Location;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
-import jakarta.persistence.*;
-import lombok.*;
+
 
 @Entity
 @NoArgsConstructor
@@ -15,17 +20,10 @@ public class Person {
     private int id;
 
     @NonNull private String name;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "location_id")
-    @NonNull private Location location;
+    @NonNull private String location;
 
-    public Person(@NonNull String name, @NonNull Location location) {
+    public Person(@NonNull String name, @NonNull String location) {
         this.name = name;
         this.location = location;
-    }
-
-
-    public int getId() {
-        return id;
     }
 }

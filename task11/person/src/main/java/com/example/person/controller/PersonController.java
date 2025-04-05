@@ -28,14 +28,9 @@ public class PersonController {
 
     @PostMapping
     public ResponseEntity<Person> save(@RequestBody Person person) {
-        Optional<Person> existingPerson = repository.findById(person.getId());
-
-        if (existingPerson.isPresent()) {
-            return new ResponseEntity<>(existingPerson.get(), HttpStatus.BAD_REQUEST);
-        } else {
-            Person savedPerson = repository.save(person);
-            return new ResponseEntity<>(savedPerson, HttpStatus.CREATED);
-        }
+        return repository.findById(person.getId()).isPresent()
+                ? new ResponseEntity(repository.findById(person.getId()), HttpStatus.BAD_REQUEST)
+                : new ResponseEntity(repository.save(person), HttpStatus.CREATED);
     }
 
 }

@@ -3,35 +3,17 @@ package com.example.location.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class Location {
     @Id
     @GeneratedValue
-    private int id;
-
-    @NonNull
-    private String nameCity;
-    @NonNull
-    private String nameCountry;
-    @NonNull
-    private double latitude;
-    @NonNull
-    private double longitude;
-
-    public Location( @NonNull String nameCity, @NonNull String nameCountry,@NonNull double latitude,@NonNull double longitude ) {
-        this.nameCity=nameCity;
-        this.nameCountry=nameCountry;
-        this.latitude=latitude;
-        this.longitude=longitude;
-
-    }
-
+    int id;
+    @NonNull private double longitude;
+    @NonNull private double latitude;
+    @NonNull private String name;
 }
