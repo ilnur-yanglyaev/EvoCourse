@@ -4,6 +4,7 @@ import com.example.person.model.Weather;
 import com.example.person.model.Person;
 import com.example.person.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +21,18 @@ public class PersonController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Value("${location.url}")
+    String locationUrl;
+
+
+
     @GetMapping("{id}/weather")
     public ResponseEntity<?> getWeather(@PathVariable int id) {
         if (repository.existsById(id)) {
             String location = repository.findById(id).get().getLocation();
             try {
-                Weather weather = restTemplate.getForObject(
-                        "http://location-info-service/location/weather?name=" + location, Weather.class);
+                String url = String.format("http://%s/location/weather?name=", locationUrl);
+                Weather weather = restTemplate.getForObject(url + location, Weather.class);
                 return new ResponseEntity(weather, HttpStatus.OK);
             }
             catch (HttpClientErrorException ex) {
