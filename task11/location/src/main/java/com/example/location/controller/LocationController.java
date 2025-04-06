@@ -30,7 +30,7 @@ public class LocationController {
         Optional<Location> locationOptional = repository.findByName(name);
         if (locationOptional.isPresent()) {
             Location location = locationOptional.get();
-            String url = String.format("http://localhost:8082/weather?lat=%s&lon=%s", location.getLatitude(), location.getLongitude());
+            String url = String.format("http://weather-info-service/weather?lat=%s&lon=%s", location.getLatitude(), location.getLongitude());
             return ResponseEntity.ok().body(restTemplate.getForObject(url, Weather.class));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no such location");

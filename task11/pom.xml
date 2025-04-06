@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.5</version> <!-- Проверьте актуальную версию! -->
+        <version>3.4.4</version> <!-- Проверьте актуальную версию! -->
         <relativePath/>
     </parent>
 
@@ -57,6 +57,8 @@
                 <scope>test</scope>
             </dependency>
         </dependencies>
+
+
 
     <build>
         <plugins>
